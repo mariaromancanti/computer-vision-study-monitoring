@@ -1,63 +1,270 @@
-# Proyecto Final – Visión por Ordenador I  
-## Sistema de monitorización del uso del teléfono móvil durante sesiones de estudio
+# Computer Vision Study Monitoring System
 
-Este proyecto implementa un sistema de visión por ordenador basado en técnicas clásicas de procesado de imagen, utilizando una cámara como fuente de adquisición de datos. El sistema combina un mecanismo de seguridad basado en patrones visuales con un módulo de seguimiento de objetos en tiempo real.
+A real-time computer vision system designed to monitor smartphone usage during study sessions using classical image processing and object tracking techniques.
 
-El sistema propuesto se ha diseñado con el objetivo de monitorizar el uso del teléfono móvil durante sesiones de estudio, permitiendo contabilizar el número de veces que el dispositivo aparece y desaparece de la escena como una medida aproximada de las interrupciones producidas durante el estudio.
-
----
-
-## Objetivo del sistema
-
-Los objetivos principales del proyecto son:
-- Desarrollar un sistema de visión por ordenador que funcione en tiempo real.
-- Implementar un sistema de seguridad basado en la detección y validación de una secuencia de patrones geométricos.
-- Realizar el seguimiento de un teléfono móvil mediante un tracker de objeto.
-- Contabilizar el número de veces que el dispositivo es utilizado durante una sesión de estudio.
-- Mostrar la salida de vídeo junto con información relevante del sistema, como la tasa de refresco (FPS).
+The system combines camera calibration, geometric pattern detection, visual sequence validation and real-time object tracking to estimate how frequently a smartphone is used during a study session.
 
 ---
 
-## Arquitectura del sistema
+## Overview
 
-El sistema se estructura en varios módulos funcionales. En primer lugar, se realiza la adquisición continua de imágenes desde la cámara. A continuación, se aplica una corrección de distorsión utilizando los parámetros obtenidos en una fase de calibración offline.
+This project was developed as part of the **Computer Vision I** course within the Mathematical Engineering and Artificial Intelligence program at ICAI School of Engineering.
 
-Las imágenes corregidas se procesan en un sistema de seguridad encargado de detectar patrones geométricos y validar una secuencia predefinida. Mientras la secuencia no es correcta, el sistema permanece bloqueado. Una vez validada la secuencia, se activa el sistema propuesto, que realiza el seguimiento del teléfono móvil en tiempo real y contabiliza su uso. La salida del sistema se muestra de forma continua mediante una ventana de vídeo.
+The objective was to design and implement a complete real-time computer vision pipeline using **Python and OpenCV**.
+
+The system operates in two main stages:
+
+1. A visual security mechanism detects and validates a predefined sequence of geometric patterns.
+2. Once the sequence is successfully validated, the system activates a smartphone tracking module.
+
+The tracker follows the smartphone within the video stream and records when the device appears or disappears from the scene, providing an approximate measure of interruptions during a study session.
 
 ---
 
-## Estructura del repositorio
-├── Main.py # Sistema principal
-├── secuencia_funciones.py # Sistema de seguridad (patrones y secuencia)
-├── deteccion_funciones.py # Tracker del teléfono móvil
-├── calibrate_camara.py # Calibración de la cámara (offline)
-├── calibration_data.npz # Parámetros de calibración
-├── calibration.yaml # Parámetros de calibración
-├── calibration_images/ # Imágenes del patrón de calibración
-|__ guardar_transformaciones.py # Para poder guardas las imágenes de la presentación
-└── README.md # Documentación del proyecto
+## Key Features
 
+- Real-time video processing
+- Camera calibration and distortion correction
+- Geometric pattern detection
+- Visual sequence validation
+- Smartphone object tracking
+- Bounding-box visualization
+- Smartphone usage event counting
+- Real-time FPS monitoring
+- Modular computer vision architecture
 
-## Requisitos del sistema
+---
 
-Para la correcta ejecución del proyecto es necesario disponer de Python 3.10 y de las librerías OpenCV y NumPy.
+## Technologies
 
-## Ejecución del proyecto
+- **Python**
+- **OpenCV**
+- **NumPy**
+- Computer Vision
+- Image Processing
+- Object Tracking
+- Camera Calibration
+- Real-Time Video Processing
 
-Antes de ejecutar el sistema principal es necesario realizar la calibración de la cámara. Este proceso se ejecuta una única vez y genera los ficheros que contienen los parámetros de calibración. se hace ejecutando python calibrate_camara.py
+---
 
-Una vez realizada la calibración, el sistema principal puede ejecutarse mediante el siguiente comando: python Main.py
+## System Architecture
 
-Durante la ejecución, el sistema mostrará la salida de vídeo en tiempo real.
+The computer vision pipeline follows the following sequence:
 
-## Funcionamiento del sistema
+```text
+Camera Input
+     ↓
+Camera Calibration
+     ↓
+Distortion Correction
+     ↓
+Geometric Pattern Detection
+     ↓
+Sequence Validation
+     ↓
+Smartphone Tracking
+     ↓
+Usage Event Detection
+     ↓
+Real-Time Visualization
+```
 
-El sistema funciona en dos fases diferenciadas. En la primera fase, el sistema opera en modo de seguridad, en el que el usuario debe introducir correctamente una secuencia predefinida de patrones geométricos para desbloquear el sistema. Mientras la secuencia no sea correcta, el sistema permanece bloqueado y únicamente se muestra la información correspondiente a la detección de patrones. En la segunda fase, una vez validada la secuencia, se activa el sistema de seguimiento del teléfono móvil. El tracker mantiene una bounding box alrededor del dispositivo y contabiliza las veces que este aparece y desaparece de la escena, proporcionando una medida aproximada del uso del móvil durante la sesión de estudio. La salida del sistema se muestra de forma continua, incluyendo la tasa de refresco (FPS).
+The system remains locked until the correct sequence of visual patterns is detected.
 
-## Resultados esperados
+After successful validation, the smartphone tracking module is activated and the system begins monitoring the device.
 
-El sistema permite monitorizar de forma visual y cuantitativa el uso del teléfono móvil durante sesiones de estudio, ejecutándose de manera fluida y estable en tiempo real. El diseño modular facilita la comprensión del sistema y su posible ampliación a otros escenarios de análisis visual.
+---
 
-## Autoría y uso de IA
+## Repository Structure
 
-Proyecto desarrollado como parte del Proyecto Final de la asignatura Visión por Ordenador I. Se ha utilizado un asistente de inteligencia artificial como apoyo para la estructuración del código y la redacción de la documentación, bajo supervisión y validación del autor.
+```text
+.
+├── Main.py
+├── calibrate_camara.py
+├── deteccion_funciones.py
+├── secuencia_funciones.py
+├── guardar_transformaciones.py
+├── codigos previos/
+├── VIDEO_DEMOSTRACIÓN.mp4
+├── PROYECTO FINAL VISION.pptx
+├── TRABAJO_FINAL_VISION (2).pdf
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Main Components
+
+### `Main.py`
+
+Controls the complete execution pipeline and manages the real-time video processing workflow.
+
+It integrates the different modules of the system and coordinates the transition between the security stage and the smartphone monitoring stage.
+
+### `calibrate_camara.py`
+
+Performs the camera calibration process.
+
+The calibration parameters are used to correct lens distortion before the images are processed by the rest of the computer vision pipeline.
+
+### `secuencia_funciones.py`
+
+Implements the visual security mechanism.
+
+It detects geometric patterns and verifies whether they appear in the predefined sequence required to unlock the monitoring system.
+
+### `deteccion_funciones.py`
+
+Implements the smartphone tracking module.
+
+Once the security sequence has been validated, this module tracks the smartphone and monitors when the device appears or disappears from the scene.
+
+### `guardar_transformaciones.py`
+
+Contains utility functions used to save processed images and intermediate transformations.
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/mariaromancanti/computer-vision-study-monitoring.git
+```
+
+Move into the project directory:
+
+```bash
+cd computer-vision-study-monitoring
+```
+
+Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Running the Project
+
+Before running the main system, the camera must be calibrated.
+
+Run:
+
+```bash
+python calibrate_camara.py
+```
+
+The calibration process generates the parameters required for camera distortion correction.
+
+Once the calibration has been completed, start the main application:
+
+```bash
+python Main.py
+```
+
+The system will open the camera feed and process the video stream in real time.
+
+---
+
+## System Workflow
+
+### 1. Camera Acquisition
+
+The system continuously captures frames from the camera.
+
+### 2. Camera Correction
+
+The previously obtained calibration parameters are applied to reduce lens distortion.
+
+### 3. Visual Security System
+
+The program detects predefined geometric patterns.
+
+The user must provide the correct sequence before the system can continue.
+
+### 4. Smartphone Tracking
+
+After successful validation, the smartphone tracking module becomes active.
+
+A bounding box is used to track the device across successive video frames.
+
+### 5. Usage Monitoring
+
+The system detects when the smartphone appears or disappears from the scene.
+
+These events are counted as an approximate measure of smartphone usage during the study session.
+
+### 6. Real-Time Visualization
+
+The processed video stream is displayed together with relevant information about the system, including the current tracking state and FPS.
+
+---
+
+## Results
+
+The project successfully integrates several classical computer vision techniques into a single real-time application.
+
+The implemented system is capable of:
+
+- detecting geometric visual patterns;
+- validating a predefined visual sequence;
+- controlling access to the monitoring system;
+- tracking a smartphone in real time;
+- displaying a bounding box around the tracked object;
+- detecting smartphone appearance and disappearance events;
+- estimating smartphone usage during study sessions;
+- displaying real-time performance information.
+
+The modular structure of the project also allows individual components to be modified or replaced independently.
+
+---
+
+## Demonstration
+
+A demonstration video is included in the repository:
+
+`VIDEO_DEMOSTRACIÓN.mp4`
+
+The video shows the system operating in real time and demonstrates the interaction between the visual security mechanism and the smartphone tracking module.
+
+---
+
+## Possible Future Improvements
+
+Several extensions could improve the capabilities of the system:
+
+- Deep-learning-based smartphone detection
+- Automatic smartphone detection without manual tracker initialization
+- Multi-object tracking
+- More robust tracking under changes in illumination
+- Study-session analytics
+- Usage statistics and visualization dashboards
+- Automated generation of study-session reports
+- Integration with a mobile or web application
+- Cloud-based storage and analytics
+
+A future version could replace the classical tracking approach with a deep-learning object detector to improve robustness and automate smartphone detection.
+
+---
+
+## Academic Context
+
+This project was developed as a final project for the **Computer Vision I** course within the **Mathematical Engineering and Artificial Intelligence** program at **ICAI School of Engineering – Universidad Pontificia Comillas**.
+
+The project focuses on applying computer vision concepts to a practical real-time monitoring problem.
+
+---
+
+## Author
+
+**María Román Cantillana**
+
+Mathematical Engineering & Artificial Intelligence  
+ICAI School of Engineering – Universidad Pontificia Comillas
+
+GitHub: [mariaromancanti](https://github.com/mariaromancanti)
